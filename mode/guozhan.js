@@ -453,7 +453,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				gz_yuejin:['male','wei',4,['gzxiaoguo'],['gzskin']],
 
 				gz_liubei:['male','shu',4,['rerende']],
-				gz_guanyu:['male','shu',5,['new_rewusheng'],['gzskin']],
+				gz_guanyu:['male','shu',5,['jsrgguanjue','jsrgnianen'],['gzskin']],
 				gz_zhangfei:['male','shu',4,['gzpaoxiao']],
 				gz_zhugeliang:['male','shu',3,['guanxing','new_kongcheng'],['gzskin']],
 				gz_zhaoyun:['male','shu',4,['new_longdan']],
@@ -473,11 +473,11 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				gz_ganning:['male','wu',4,['qixi']],
 				gz_lvmeng:['male','wu',4,['new_keji','new_mouduan']],
 				gz_huanggai:['male','wu',4,['new_kurou']],
-				gz_zhouyu:['male','wu',3,['reyingzi','refanjian'],['gzskin']],
+				gz_zhouyu:['male','wu',4,['gzyingzi','sbfanjian'],['gzskin']],
 				gz_daqiao:['female','wu',3,['guose','liuli']],
-				gz_luxun:['male','wu',3,['gzqianxun','duoshi'],['gzskin']],
+				gz_luxun:['male','wu',3,['jsrgyoujin','jsrgdailao','jsrgzhubei'],['gzskin']],
 				gz_sunshangxiang:['female','wu',3,['jieyin','xiaoji'],['gzskin']],
-				gz_sunjian:['male','wu',5,['yinghun'],['gzskin']],
+				gz_sunjian:['male','wu',5,['jsrgpingtao','jsrgjuelie'],['gzskin']],
 				gz_xiaoqiao:['female','wu',3,['gztianxiang','gzhongyan'],['gzskin']],
 				gz_taishici:['male','wu',4,['tianyi']],
 				gz_zhoutai:['male','wu',4,['buqu','new_fenji']],
@@ -505,7 +505,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				gz_caohong:['male','wei',4,['gzhuyuan','heyi'],['gzskin']],
 				gz_jiangfei:['male','shu',3,['reshengxi','gzshoucheng']],
 				gz_jiangwei:['male','shu',4,['tiaoxin','yizhi','tianfu'],['gzskin']],
-				gz_xusheng:['male','wu',4,['gzyicheng'],['gzskin']],
+				gz_xusheng:['male','wu',4,['gzyicheng','gzpojun'],['gzskin']],
 				gz_jiangqing:['male','wu',4,['gzshangyi','niaoxiang']],
 				gz_hetaihou:['female','qun',3,['zhendu','qiluan'],['gzskin']],
 
@@ -513,7 +513,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				gz_zangba:['male','wei',4,['rehengjiang']],
 				gz_madai:['male','shu',4,['mashu2','qianxi'],['gzskin']],
 				gz_mifuren:['female','shu',3,['gzguixiu','gzcunsi']],
-				gz_sunce:['male','wu',4,['jiang','yingyang','baka_hunshang'],['gzskin']],
+				gz_sunce:['male','wu',4,['sbjiang','gzhunzi'],['gzskin']],
 				gz_chendong:['male','wu',4,['duanxie','fenming']],
 				gz_sp_dongzhuo:['male','qun',4,['hengzheng','baoling']],
 				gz_zhangren:['male','qun',4,['chuanxin','fengshi']],
@@ -3863,6 +3863,136 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 						player.chooseToDiscard('h',2,true);
 					}
 				},
+			},
+			    //国战徐盛
+                gzpojun:{
+				shaRelated:true,
+				audio:2,
+                                mainSkill:true,
+                                init:function(player){
+					if(player.checkMainSkill('gzpojun')){
+                                                   player.removeMaxHp();
+                                         }
+				},
+				trigger:{player:'useCardToPlayered'},
+				direct:true,
+				filter:function(event,player){
+					return event.card.name=='sha'&&event.target.hp>0&&event.target.countCards('he')>0;
+				},
+				content:function(){
+					'step 0'
+					var next=player.choosePlayerCard(trigger.target,'he',[1,Math.min(trigger.target.hp,trigger.target.countCards('he'))],get.prompt('gzpojun',trigger.target));
+					next.set('ai',function(button){
+						if(!_status.event.goon) return 0;
+						var val=get.value(button.link);
+						if(button.link==_status.event.target.getEquip(2)) return 2*(val+3);
+						return val;
+					});
+					next.set('goon',get.attitude(player,trigger.target)<=0);
+					next.set('forceAuto',true);
+					'step 1'
+					if(result.bool){
+						var target=trigger.target;
+						player.logSkill('gzpojun',target);
+						target.addSkill('repojun2');
+						target.addToExpansion('giveAuto',result.cards,target).gaintag.add('repojun2');
+					}
+				},
+				ai:{
+					unequip_ai:true,
+					directHit_ai:true,
+					skillTagFilter:function(player,tag,arg){
+						if(get.attitude(player,arg.target)>0) return false;
+						if(tag=='directHit_ai') return arg.target.hp>=Math.max(1,arg.target.countCards('h')-1);
+						if(arg&&arg.name=='sha'&&arg.target.getEquip(2)) return true;
+						return false;
+					}
+				},
+				group:'repojun3',
+			},
+				//国战孙策
+                gzhunzi:{
+				audio:2,
+				trigger:{player:'dyingBegin'},
+				juexingji:true,
+                                mainSkill:true,
+				forced:true,
+				skillAnimation:true,
+				animationColor:'wood',
+				derivation:['sbyingzi','gzyinghun'],
+                                init:function(player){
+					if(player.checkMainSkill('gzhunzi')){
+                                                   player.removeMaxHp();
+                                         }
+				},
+				content:function(){
+					'step 0'
+					player.awakenSkill('gzhunzi');
+					player.gainMaxHp();
+                                        player.recover(2)
+					'step 1'
+					player.changeHujia(1,null,true);
+					'step 2'
+                                        player.addMark('sbjiang',1,false);
+					player.draw(3);
+					'step 3'
+					player.addSkillLog('sbyingzi');
+					player.addSkillLog('gzyinghun');
+				},
+				ai:{
+					maixie:true,
+					effect:{
+						target:function(card,player,target){
+							if(!target.hasFriend()||target.hp>1) return;
+							if(get.tag(card,'damage')==1&&((target.hasZhuSkill('sbzhiba')&&game.countPlayer(current=>current!=target&&current.group=='wu'))||player.countCards('hs',card=>player.canSaveCard(card,target))+target.countCards('hs',card=>target.canSaveCard(card,target))>0)&&!target.isTurnedOver()&&_status.currentPhase!=target&&get.distance(_status.currentPhase,target,'absolute')<=3) return [0.5,1];
+						}
+					}
+				}
+			},
+            //国战周瑜
+			gzyingzi:{
+				audio:2,
+				audioname:['sb_sunce'],
+                                mainSkill:true,
+                                init:function(player){
+					if(player.checkMainSkill('gzyingzi')){
+                                                   player.removeMaxHp();
+                                         }
+				},
+				trigger:{player:'phaseDrawBegin2'},
+				forced:true,
+				getNum:function(player){
+					return (player.countCards('h')>=2)+(player.hp>=2)+(player.countCards('e')>=1);
+				},
+				filter:function(event,player){
+					return !event.numFixed&&lib.skill.gzyingzi.getNum(player)>0;
+				},
+				content:function(){
+					var num=lib.skill.gzyingzi.getNum(player);
+					trigger.num+=num;
+					player.addTempSkill('gzyingzi_limit');
+					player.addMark('gzyingzi_limit',num,false);
+				},
+				ai:{
+					threaten:2
+				},
+				subSkill:{
+					limit:{
+						charlotte:true,
+						forced:true,
+                                                //mainSkill:true,
+						onremove:true,
+						marktext:'英',
+						intro:{
+							content:'本回合手牌上限+#',
+						},
+						mod:{
+							maxHandcard:function(player,num){
+								return num+player.countMark('gzyingzi_limit');
+							}
+						},
+					}
+				}
 			},
 			//周夷
 			gzzhukou:{
@@ -12072,6 +12202,10 @@ return event.junling=='junling5'?1:0;});
 			},
 			gzyicheng:{
 				audio:'yicheng',
+				viceSkill:true,
+                init:function(player){
+					player.checkViceSkill('gzyicheng');
+				},
 				trigger:{
 					global:['useCardToPlayered','useCardToTargeted'],
 				},
@@ -14663,6 +14797,12 @@ return event.junling=='junling5'?1:0;});
 			"baka_yinghun_info":"准备阶段开始时，你可令一名其他角色执行一项：摸X张牌，然后弃置一张牌；或摸一张牌，然后弃置X张牌（X为你已损失的体力值）。",
 			"baka_yingzi":"英姿",
 			"baka_yingzi_info":"锁定技，摸牌阶段摸，你多摸一张牌；你的手牌上限+X（X为你已损失的体力值）。",
+			 'gzyingzi':'英姿',
+			'gzyingzi_info':'主将技，锁定技，此武将牌减少半个阴阳鱼。摸牌阶段，你多摸X张牌，且令你本回合手牌上限+X（X为以下条件中你满足的项数：手牌数不小于2、体力值不小于2、装备区里的牌数不小于1）。',
+            gzpojun:'破军',
+			gzpojun_info:'主将技，此武将牌减少半个阴阳鱼。当你使用【杀】指定目标后，你可以将其的至多X张牌置于其武将牌上（X为其体力值），然后其于当前回合结束时获得这些牌。当你使用【杀】对一名角色造成伤害时，若该角色的手牌数和装备区内的牌数均不大于你，则此伤害+1。',
+            gzhunzi:'魂姿',
+			gzhunzi_info:'主将技，觉醒技，此武将牌减少半个阴阳鱼。当你进入濒死状态时，你加1点体力上限，获得1点护甲，恢复2点体力，摸三张牌。然后你获得〖英姿〗和〖英魂〗,修改〖激昂③〗为“出牌阶段限X次”（X为场上其他吴势力角色数+1）。',
 			gzyiji:"遗计",
 			gzyiji_info:"当你受到伤害后，你可以观看牌堆顶的两张牌，并将其交给任意角色。",
 			gzjieming:"节命",
