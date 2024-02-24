@@ -10444,6 +10444,26 @@ return event.junling=='junling5'?1:0;});
 					player.viewCharacter(target,1);
 				},
 			},
+			 _shilijinnang:{
+				forced:true,
+				trigger:{
+					global:"gameStart",
+				},
+                filter:function(){
+					if(get.mode()!='guozhan') return false;
+                    if(_status.added) return false;
+					return true;
+				},
+                content:function(){
+					_status.added=true;
+					var cards=[];
+					cards.push(game.createCard2('gz_haolingtianxia','spade',12));
+                    cards.push(game.createCard2('gz_kefuzhongyuan','diamond',1));
+                    cards.push(game.createCard2('gz_guguoanbang','heart',1));
+                    cards.push(game.createCard2('gz_wenheluanwu','club',12));
+                    game.cardsDiscard(cards);
+				},
+            },
 			_aozhan_judge:{
 				trigger:{
 					player:"phaseBefore",
