@@ -487,7 +487,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 
 				gz_huatuo:['male','qun',3,['new_chuli','jijiu']],
 				gz_lvbu:['male','qun',5,['gzwushuang'],['gzskin']],
-				gz_diaochan:['female','qun',3,['lijian','biyue'],['gzskin']],
+				gz_diaochan:['female','qun',3,['sblijian','sbbiyue'],['gzskin']],
 				gz_re_yuanshao:['male','qun',4,['new_luanji'],['gzskin']],
 				gz_yanwen:['male','qun',4,['shuangxiong']],
 				gz_jiaxu:['male','qun',3,['wansha','luanwu','gzweimu'],['gzskin']],
