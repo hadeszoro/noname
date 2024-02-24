@@ -1677,7 +1677,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 					var cards=[];
 					//因为是线下武将 所以同一张牌重复进入只算一张
 					game.getGlobalHistory('cardMove',function(evt){
-						if(evt.name=='cardsDiscard'||(evt.name=='lose'&&evt.position==ui.discardPile))	cards.addArray(evt.cards);
+						if(evt.name=='cardsDiscard'||(evt.name=='lose'&&evt.position==ui.discardPile)) cards.addArray(evt.cards);
 					});
 					return cards.length;
 				},
@@ -11050,9 +11050,9 @@ return event.junling=='junling5'?1:0;});
 					'step 2'
 					if(result.control!='cancel2'){
 						var skill='jiahe_'+result.control;
-						player.addTempSkill(skill);
+						player.addTempSkills(skill);
 						if(!event.done) player.logSkill('jiahe_put');
-						game.log(player,'获得了技能','【'+get.translation(skill)+'】');
+						// game.log(player,'获得了技能','【'+get.translation(skill)+'】');
 						if(event.num>=5&&!event.done){
 							event.done=true;
 							event.goto(1);
