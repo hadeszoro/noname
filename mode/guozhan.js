@@ -476,7 +476,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				gz_zhouyu:['male','wu',3,['reyingzi','refanjian'],['gzskin']],
 				gz_daqiao:['female','wu',3,['guose','liuli']],
 				gz_luxun:['male','wu',3,['gzqianxun','duoshi'],['gzskin']],
-				gz_sunshangxiang:['female','wu',3,['jieyin','gzxiaoji'],['gzskin']],
+				gz_sunshangxiang:['female','wu',3,['jieyin','xiaoji'],['gzskin']],
 				gz_sunjian:['male','wu',5,['yinghun'],['gzskin']],
 				gz_xiaoqiao:['female','wu',3,['gztianxiang','gzhongyan'],['gzskin']],
 				gz_taishici:['male','wu',4,['tianyi']],
@@ -5684,7 +5684,7 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 				preHidden:true,
 				content:function(){
 					'step 0'
-					trigger.player.draw();
+					trigger.player.draw(2);
 					if(player.hasHistory('damage',function(evt){
 						return evt.card==trigger.card;
 					})&&game.hasPlayer(function(current){
@@ -5718,8 +5718,8 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 					return event.num==1;
 				},
 				content:function(){
-					if(trigger.num==1) player.draw();
-					else player.chooseToDiscard(true,'he',2);
+					if(trigger.num==1) player.draw(2);
+					else player.chooseToDiscard(true,'he',3);
 				},
 			},
 			gzzhuosheng:{
