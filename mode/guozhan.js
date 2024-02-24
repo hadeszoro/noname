@@ -28,7 +28,18 @@ game.import('mode',function(lib,game,ui,get,ai,_status){
 					}
 					else lib.character[i][1]='qun';
 				}
-			}
+			};
+			var character = Object.keys(lib.character);
+       				 var ye_character = character.filter(c=>lib.character[c][1]=='ye');
+        			if(ye_character.length>1){
+           			 var ban_num = ye_character.length - 1;
+           			 var bannedCharacter = ye_character.randomGets(ban_num);
+            			for (let index = 0; index < bannedCharacter.length-1; index++) {
+                			const key = bannedCharacter[index];
+               				 lib.characterFilter[key]=function(){
+                   			 return false;
+					}
+            }
 		},
 		onreinit:function(){
 			var pack=lib.characterPack.mode_guozhan;
